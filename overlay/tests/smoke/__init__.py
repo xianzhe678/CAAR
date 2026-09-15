@@ -1,0 +1,2 @@
+"""Optional hardware smoke tests."""
+

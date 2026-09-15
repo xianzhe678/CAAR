@@ -1,0 +1,47 @@
+######### Original TOPECL + evaluation-only formal instrumentation #########
+basic:
+    device: '0'
+    seed: [42, 100, 1993]
+    dataset: cifar100
+    shuffle: false
+    method: formal_topecl
+    method_type: multi_steps
+    eval_metric: acc
+    backbone: openai_ViT-B/16
+    save_models: true
+    split_dataset: true
+    init_cls: 10
+    increment: 10
+    note: original_topecl_formal_eval
+    openset_test: true
+
+special:
+    backbone_pretrained: null
+    text_encoder: openai_ViT-B/16
+    text_encoder_pretrained: null
+    sample_per_class: 1
+    text_template: "a photo of a {}."
+    semantic_scale: 1.0
+    mlp1_dim: 512
+    mlp2_dim: 64
+    stage2_epoch: 5
+    # Used only for end-of-epoch training diagnostics; formal evaluation always
+    # writes Text, Orthogonal, and Fixed Fusion together.
+    infer_eval_mode: ['LCLS']
+    fe_lrscale_firstepoch: 0.001
+
+    formal_fusion_weight: 1.0
+    formal_checkpoint_policy: seed42_all_else_final
+    formal_require_clean_git: false
+
+options:
+    cifar100:
+        openai_ViT-B/16:
+            img_size: 224
+            epochs: 20
+            batch_size: 32
+            num_workers: 4
+            opt_type: adamw
+            lrate: 0.001
+            weight_decay: 0.000
+            scheduler: cos

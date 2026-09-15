@@ -1,0 +1,1012 @@
+{
+  "metadata": {
+    "dataset": "CIFAR-100",
+    "version": "1.0",
+    "scope": "class-level visual attributes only",
+    "image_access": "none",
+    "candidate_count_per_class": 8,
+    "intended_use": "frozen MPSB candidate bank; select four prompts per class with CLIP-based MMR"
+  },
+  "classes": {
+    "apple": [
+      "a photo of an apple with a round fruit body and a short stem.",
+      "a photo of a red, green, or yellow apple with smooth glossy skin.",
+      "a close-up photo of an apple with a shallow dimple around its stem.",
+      "a side-view photo of a nearly spherical apple with a slightly tapered base.",
+      "a photo of a whole apple with one small green leaf attached to the stem.",
+      "a photo of an apple resting upright on a plain surface.",
+      "a photo of an apple showing firm skin without the segmented rind of citrus fruit.",
+      "a centered photo of a single apple with a compact rounded silhouette."
+    ],
+    "aquarium_fish": [
+      "a photo of a small aquarium fish with a streamlined body and visible fins.",
+      "a photo of a brightly colored aquarium fish with shiny overlapping scales.",
+      "a side-view photo of an aquarium fish showing its tail, dorsal fin, and eye.",
+      "a photo of an aquarium fish with a fan-shaped tail and a small mouth.",
+      "a photo of a tropical aquarium fish swimming horizontally through clear water.",
+      "a photo of an aquarium fish near aquatic plants or aquarium gravel.",
+      "a close-up photo of an aquarium fish with colored stripes or patches on its body.",
+      "a centered photo of one aquarium fish with an oval body silhouette."
+    ],
+    "baby": [
+      "a photo of a human baby with a round face, large eyes, and soft cheeks.",
+      "a photo of a baby with a small body, short limbs, and fine hair.",
+      "a close-up photo of a baby's face with a small nose and rounded cheeks.",
+      "a photo of a baby sitting or crawling in simple infant clothing.",
+      "a photo of a baby wearing a romper, bib, or soft cap.",
+      "a photo of a baby being held safely in an adult's arms.",
+      "a photo of a human infant with proportions smaller and rounder than an older child.",
+      "a centered portrait of a baby looking toward the camera."
+    ],
+    "bear": [
+      "a photo of a bear with a large heavy body and thick fur.",
+      "a photo of a brown, black, or pale bear with rounded ears.",
+      "a side-view photo of a bear showing a long muzzle and powerful shoulders.",
+      "a photo of a bear standing on four strong legs with large paws.",
+      "a close-up photo of a bear's broad face, dark nose, and small eyes.",
+      "a photo of a bear walking through woodland, grass, or rocky terrain.",
+      "a photo of a bear with a short tail and a bulky rounded silhouette.",
+      "a centered photo of a solitary bear facing partly toward the camera."
+    ],
+    "beaver": [
+      "a photo of a beaver with a stocky brown body and dense wet fur.",
+      "a side-view photo of a beaver showing its broad flat paddle-shaped tail.",
+      "a close-up photo of a beaver with orange front teeth and a blunt muzzle.",
+      "a photo of a beaver standing low on short legs beside water.",
+      "a photo of a beaver with small rounded ears and dark eyes.",
+      "a photo of a beaver swimming near sticks, reeds, or a wooden dam.",
+      "a photo of a beaver carrying or gnawing a branch.",
+      "a centered photo of a beaver with its distinctive flat tail visible."
+    ],
+    "bed": [
+      "a photo of a bed with a flat mattress supported by a rectangular frame.",
+      "a photo of a bed covered by sheets, pillows, and a blanket.",
+      "a front-view photo of a bed with a headboard behind the pillows.",
+      "a side-view photo of a bed showing its long low sleeping surface.",
+      "a photo of a neatly made bed with layered fabric and squared corners.",
+      "a photo of a bed placed against a bedroom wall.",
+      "a photo of a single or double bed with visible legs below the frame.",
+      "a centered indoor photo of a bed filling most of the scene."
+    ],
+    "bee": [
+      "a close-up photo of a bee with a small striped body and two wings.",
+      "a photo of a yellow-and-black bee with a fuzzy thorax.",
+      "a side-view photo of a bee showing six legs, antennae, and a tapered abdomen.",
+      "a photo of a bee with translucent wings folded above its body.",
+      "a photo of a bee hovering with its legs hanging beneath it.",
+      "a photo of a bee collecting nectar or pollen from a flower.",
+      "a close-up photo of a bee with pollen gathered on its hind legs.",
+      "a centered macro photo of one bee against a softly blurred background."
+    ],
+    "beetle": [
+      "a close-up photo of a beetle with a hard oval shell and six legs.",
+      "a photo of a black, brown, green, or red beetle with a glossy back.",
+      "a top-view photo of a beetle showing the seam between its wing covers.",
+      "a side-view photo of a beetle with bent legs and short antennae.",
+      "a photo of a beetle with a rounded armored body and a small head.",
+      "a photo of a beetle crawling on a leaf, bark, or soil.",
+      "a close-up photo of a beetle showing rigid wing cases rather than exposed wings.",
+      "a centered macro photo of a single beetle with a compact silhouette."
+    ],
+    "bicycle": [
+      "a photo of a bicycle with two equal-sized wheels connected by a frame.",
+      "a side-view photo of a bicycle showing handlebars, saddle, pedals, and chain.",
+      "a photo of a bicycle with thin circular wheels and metal spokes.",
+      "a photo of an upright bicycle with a triangular central frame.",
+      "a photo of a bicycle parked on its kickstand or leaning against a wall.",
+      "a photo of a person riding a bicycle along a road or path.",
+      "a close-up photo of a bicycle showing the crank, chain, and rear wheel.",
+      "a centered side profile of a complete bicycle."
+    ],
+    "bottle": [
+      "a photo of a bottle with a narrow neck and a wider hollow body.",
+      "a photo of a clear, colored, plastic, or glass bottle with a cap.",
+      "a side-view photo of an upright bottle with a cylindrical silhouette.",
+      "a close-up photo of a bottle showing its rim, neck, shoulder, and base.",
+      "a photo of a bottle containing visible liquid below the neck.",
+      "a photo of a bottle standing on a table or shelf.",
+      "a photo of a reusable or beverage bottle with a label around its body.",
+      "a centered photo of a single bottle against a simple background."
+    ],
+    "bowl": [
+      "a photo of a bowl with a round open top and a deep curved interior.",
+      "a top-view photo of a ceramic, glass, or metal bowl with a circular rim.",
+      "a side-view photo of a bowl showing sloped walls and a small flat base.",
+      "a photo of an empty bowl with a smooth concave shape.",
+      "a photo of a bowl filled with food, fruit, or liquid.",
+      "a photo of a bowl resting upright on a kitchen or dining surface.",
+      "a close-up photo of a bowl whose depth is greater than a flat plate.",
+      "a centered photo of one round bowl with its rim fully visible."
+    ],
+    "boy": [
+      "a photo of a young boy with a child's face and small body proportions.",
+      "a portrait of a boy with short or medium-length hair and youthful features.",
+      "a full-body photo of a boy wearing everyday children's clothing.",
+      "a photo of a boy standing, walking, or playing outdoors.",
+      "a close-up photo of a boy's face with smooth cheeks and a youthful jawline.",
+      "a photo of a school-age boy carrying a toy, ball, or small backpack.",
+      "a photo of a male child visibly older than a baby and smaller than an adult man.",
+      "a centered portrait of one boy looking toward the camera."
+    ],
+    "bridge": [
+      "a photo of a bridge spanning across water, a road, or a valley.",
+      "a side-view photo of a bridge with a long horizontal deck and supports.",
+      "a photo of an arched, beam, or suspension bridge connecting two sides.",
+      "a photo of a bridge with pillars rising from the ground or water.",
+      "a photo taken along a bridge deck with rails on both sides.",
+      "a distant photo of a bridge crossing a river or coastal inlet.",
+      "a photo of a bridge showing cables, arches, or repeated structural beams.",
+      "a centered landscape photo with the bridge forming a strong horizontal line."
+    ],
+    "bus": [
+      "a photo of a bus with a long tall body and many side windows.",
+      "a side-view photo of a bus showing passenger doors and multiple rows of seats.",
+      "a front-view photo of a bus with a broad windshield and large mirrors.",
+      "a photo of a city or school bus with large wheels beneath a rectangular body.",
+      "a photo of a bus stopped beside a curb or bus stop.",
+      "a photo of a bus driving on an urban or rural road.",
+      "a photo of a bus whose passenger cabin is larger than a pickup truck.",
+      "a centered photo of a complete bus viewed from a front-side angle."
+    ],
+    "butterfly": [
+      "a close-up photo of a butterfly with four broad patterned wings.",
+      "a top-view photo of a butterfly with colorful wings spread symmetrically.",
+      "a side-view photo of a butterfly with thin legs and long clubbed antennae.",
+      "a photo of a butterfly showing a slender body between two pairs of wings.",
+      "a photo of a butterfly resting with its wings open or upright.",
+      "a photo of a butterfly feeding on a flower in daylight.",
+      "a close-up photo of butterfly wings covered in spots, bands, or eye-like markings.",
+      "a centered macro photo of one butterfly against green foliage."
+    ],
+    "camel": [
+      "a photo of a camel with a tall body, long legs, and one or two humps.",
+      "a side-view photo of a tan or brown camel with a long curved neck.",
+      "a close-up photo of a camel's long face, large nostrils, and small ears.",
+      "a photo of a camel standing on broad padded feet.",
+      "a photo of a camel carrying a saddle or load across its back.",
+      "a photo of a camel walking through dry sand or sparse desert vegetation.",
+      "a photo of a camel with a shaggy coat around its neck and hump.",
+      "a centered side profile of a camel with its hump clearly visible."
+    ],
+    "can": [
+      "a photo of a metal beverage can with a short cylindrical body.",
+      "a photo of an aluminum beverage can with a printed label and reflective surface.",
+      "a top-view photo of a metal can showing a circular lid and pull tab.",
+      "a side-view photo of an upright metal can with straight walls and rounded ends.",
+      "a photo of a sealed beverage can standing on a table or shelf.",
+      "a photo of a crushed or opened metal can with thin folded edges.",
+      "a close-up photo of a metal can showing the rolled rim around its lid.",
+      "a centered product-style photo of one cylindrical beverage can."
+    ],
+    "castle": [
+      "a photo of a castle with thick stone walls and tall defensive towers.",
+      "a distant photo of a castle with battlements along its roofline.",
+      "a front-view photo of a castle showing an arched gate and fortified entrance.",
+      "a photo of a castle with turrets, narrow windows, and weathered masonry.",
+      "a photo of a large castle complex with several connected towers.",
+      "a photo of a castle standing on a hill, rocky ground, or beside water.",
+      "a photo of a medieval castle with a heavier silhouette than an ordinary house.",
+      "a centered landscape photo of a castle against the sky."
+    ],
+    "caterpillar": [
+      "a close-up photo of a caterpillar with a long segmented soft body.",
+      "a photo of a green, brown, striped, or brightly patterned caterpillar.",
+      "a side-view photo of a caterpillar showing many short gripping legs.",
+      "a photo of a caterpillar with a rounded head and repeated body segments.",
+      "a photo of a caterpillar curled or stretched along a stem.",
+      "a macro photo of a caterpillar crawling on a leaf or branch.",
+      "a close-up photo of a caterpillar covered with fine hairs or small spines.",
+      "a centered photo of one caterpillar forming an elongated curved silhouette."
+    ],
+    "cattle": [
+      "a photo of cattle with large heavy bodies, four legs, and cloven hooves.",
+      "a side-view photo of a cow or bull with a broad torso and long tail.",
+      "a close-up photo of cattle showing a wide muzzle and large outward ears.",
+      "a photo of horned or hornless cattle with short smooth coats.",
+      "a photo of black, brown, white, or spotted cattle standing together.",
+      "a photo of cattle grazing in a grassy field or farm pasture.",
+      "a photo of cattle with a visible udder or muscular shoulders.",
+      "a centered rural photo of one cow or bull viewed from the side."
+    ],
+    "chair": [
+      "a photo of a chair with one raised backrest and a single-person seat.",
+      "a front-view photo of a chair showing its seat, back, and supporting legs.",
+      "a side-view photo of a wooden, metal, or upholstered chair.",
+      "a photo of a chair with four legs or one central pedestal.",
+      "a photo of an armchair with supports on both sides of the seat.",
+      "a photo of a chair placed beside a table or against an indoor wall.",
+      "a photo of an empty chair with a narrower seat than a couch.",
+      "a centered photo of one complete chair against a simple background."
+    ],
+    "chimpanzee": [
+      "a photo of a chimpanzee with dark coarse hair and a mostly bare face.",
+      "a close-up portrait of a chimpanzee with rounded ears and expressive eyes.",
+      "a side-view photo of a chimpanzee showing long arms and a short body.",
+      "a photo of a chimpanzee walking on its knuckles or sitting upright.",
+      "a photo of a chimpanzee with grasping hands and no visible tail.",
+      "a photo of a chimpanzee climbing branches or resting in forest vegetation.",
+      "a close-up photo of a chimpanzee's protruding muzzle and dark wrinkled skin.",
+      "a centered photo of one chimpanzee facing the camera."
+    ],
+    "clock": [
+      "a photo of a clock with a marked circular or rectangular face.",
+      "a front-view photo of an analog clock with hour and minute hands.",
+      "a photo of a digital clock displaying large numerical time digits.",
+      "a close-up photo of a clock face with evenly spaced hour markings.",
+      "a photo of a wall, desk, or alarm clock in an upright position.",
+      "a photo of a clock mounted on a wall or standing on furniture.",
+      "a photo of a clock with a central pivot and two or three narrow hands.",
+      "a centered straight-on photo of one complete clock."
+    ],
+    "cloud": [
+      "a photo of a white or gray cloud suspended in the sky.",
+      "a photo of a fluffy cloud with soft rounded edges against blue sky.",
+      "a photo of a dark dense rain cloud with a broad uneven underside.",
+      "a wide-view photo of several clouds forming layered shapes overhead.",
+      "a photo of a tall billowing cloud lit by sunlight around its edges.",
+      "a landscape photo with a cloud floating above a low horizon.",
+      "a photo of a cloud with an irregular vapor-like form and no solid outline.",
+      "a centered sky photo dominated by one large cloud."
+    ],
+    "cockroach": [
+      "a close-up photo of a cockroach with a flat oval brown body.",
+      "a top-view photo of a cockroach with very long thin antennae.",
+      "a side-view photo of a cockroach showing six spiny legs.",
+      "a photo of a cockroach with a shield-like segment covering its head.",
+      "a photo of a cockroach with folded wings lying flat along its back.",
+      "a photo of a cockroach crawling across a floor, wall, or leaf litter.",
+      "a close-up photo of a cockroach showing a segmented glossy abdomen.",
+      "a centered macro photo of one cockroach with antennae extended."
+    ],
+    "couch": [
+      "a photo of a couch with a long padded seat for several people.",
+      "a front-view photo of a couch showing back cushions and two armrests.",
+      "a side-view photo of an upholstered couch raised on short legs.",
+      "a photo of a fabric or leather couch with multiple seat cushions.",
+      "a photo of an empty couch with pillows arranged along its back.",
+      "a photo of a couch placed against a living-room wall.",
+      "a photo of a couch wider and lower than a single chair.",
+      "a centered indoor photo showing the complete couch."
+    ],
+    "crab": [
+      "a photo of a crab with a broad hard shell and two large claws.",
+      "a top-view photo of a red, orange, brown, or blue crab.",
+      "a front-view photo of a crab showing eye stalks and paired pincers.",
+      "a photo of a crab with eight walking legs extending sideways.",
+      "a photo of a crab holding its claws raised in front of its body.",
+      "a photo of a crab on wet sand, rocks, or shallow coastal water.",
+      "a close-up photo of a crab's jointed legs and textured shell.",
+      "a centered photo of one crab with a wide sideways silhouette."
+    ],
+    "crocodile": [
+      "a photo of a crocodile with a long armored body and powerful tail.",
+      "a side-view photo of a crocodile showing a long narrow toothed snout.",
+      "a close-up photo of a crocodile's rough scales and raised eyes.",
+      "a photo of a crocodile resting low on four short splayed legs.",
+      "a photo of a crocodile with bony ridges running along its back.",
+      "a photo of a crocodile partly submerged beside a muddy riverbank.",
+      "a photo of a crocodile swimming with only its eyes and snout above water.",
+      "a centered side profile of one crocodile from head to tail."
+    ],
+    "cup": [
+      "a photo of a cup with a small open vessel and one curved handle.",
+      "a side-view photo of a ceramic, glass, paper, or metal cup.",
+      "a top-view photo of a cup showing its circular rim and interior.",
+      "a close-up photo of a cup with a short body and flat base.",
+      "a photo of a cup filled with a hot or cold drink.",
+      "a photo of a cup resting on a table, counter, or saucer.",
+      "a photo of a drinking cup shorter and wider than a narrow bottle.",
+      "a centered product-style photo of one cup with its handle visible."
+    ],
+    "dinosaur": [
+      "an illustration or model of a dinosaur with a large prehistoric reptile body.",
+      "a side-view image of a dinosaur with a long tail and strong hind legs.",
+      "an image of a dinosaur with scaly skin in green, brown, or gray tones.",
+      "an image of a horned, plated, long-necked, or sharp-toothed dinosaur.",
+      "an image of a dinosaur standing or walking with its tail extended for balance.",
+      "an image of a dinosaur in a museum, toy scene, or prehistoric landscape.",
+      "a close-up image of a dinosaur's reptilian head and prominent teeth or beak.",
+      "a centered full-body image of one recognizable dinosaur silhouette."
+    ],
+    "dolphin": [
+      "a photo of a dolphin with a smooth streamlined gray body.",
+      "a side-view photo of a dolphin showing a curved dorsal fin and flippers.",
+      "a close-up photo of a dolphin's rounded forehead and long narrow beak.",
+      "a photo of a dolphin swimming with its horizontal tail flukes visible.",
+      "a photo of a dolphin leaping in a curved pose above the water.",
+      "a photo of dolphins moving through blue ocean or pool water.",
+      "a photo of a dolphin with a lighter belly and a single blowhole.",
+      "a centered side profile of one dolphin from beak to tail."
+    ],
+    "elephant": [
+      "a photo of an elephant with a massive gray body and long trunk.",
+      "a side-view photo of an elephant showing large ears and column-like legs.",
+      "a close-up photo of an elephant's wrinkled skin, tusks, and small eyes.",
+      "a photo of an elephant walking with its trunk hanging or curled.",
+      "a photo of an elephant with a broad head and thin tail ending in a tuft.",
+      "a photo of an elephant in grassland, woodland, or near water.",
+      "a photo of an adult elephant beside a smaller calf.",
+      "a centered full-body photo of one elephant viewed from the front-side."
+    ],
+    "flatfish": [
+      "a photo of a flatfish with a very thin oval body lying on one side.",
+      "a top-view photo of a mottled brown or sandy flatfish.",
+      "a close-up photo of a flatfish with both eyes on the upward-facing side.",
+      "a photo of a flatfish with long fins edging its flattened body.",
+      "a photo of a flatfish resting flat against the seabed.",
+      "a photo of a camouflaged flatfish partly covered by sand.",
+      "a side-angle photo showing the flatfish's asymmetrical head and small mouth.",
+      "a centered underwater photo of one broad leaf-shaped flatfish."
+    ],
+    "forest": [
+      "a photo of a forest filled with many closely spaced trees.",
+      "a wide-view photo of a forest with layered trunks and a leafy canopy.",
+      "a photo of a green forest with sunlight filtering through branches.",
+      "a photo taken inside a forest showing a shaded floor and vertical tree trunks.",
+      "a distant photo of a forest forming a dense dark-green band.",
+      "a photo of a forest path winding between trees and undergrowth.",
+      "a photo of a forest with repeated natural foliage rather than isolated trees.",
+      "a centered landscape photo dominated by dense woodland."
+    ],
+    "fox": [
+      "a photo of a fox with a slender body, pointed muzzle, and bushy tail.",
+      "a photo of a red, gray, white, or sandy fox with triangular ears.",
+      "a side-view photo of a fox showing long thin legs and a low body.",
+      "a close-up photo of a fox's narrow face, dark nose, and alert eyes.",
+      "a photo of a fox standing with its large tail held behind or curled around it.",
+      "a photo of a fox walking through grass, snow, woodland, or dry terrain.",
+      "a photo of a fox with dark lower legs and a lighter chest or tail tip.",
+      "a centered portrait of one fox facing partly toward the camera."
+    ],
+    "girl": [
+      "a photo of a young girl with a child's face and small body proportions.",
+      "a portrait of a girl with short, medium, or long hair and youthful features.",
+      "a full-body photo of a girl wearing everyday children's clothing.",
+      "a photo of a girl standing, walking, or playing outdoors.",
+      "a close-up photo of a girl's face with smooth cheeks and a youthful jawline.",
+      "a photo of a school-age girl carrying a toy, ball, or small backpack.",
+      "a photo of a female child visibly older than a baby and smaller than an adult woman.",
+      "a centered portrait of one girl looking toward the camera."
+    ],
+    "hamster": [
+      "a photo of a hamster with a tiny round body and soft dense fur.",
+      "a close-up photo of a hamster with full cheek pouches and small rounded ears.",
+      "a side-view photo of a golden, brown, gray, black, or white hamster.",
+      "a photo of a hamster standing on short legs with small front paws.",
+      "a photo of a hamster holding food close to its mouth.",
+      "a photo of a hamster inside bedding, a cage, or a small exercise area.",
+      "a close-up photo of a hamster's dark bead-like eyes and short whiskers.",
+      "a centered photo of one hamster with a compact ball-like silhouette."
+    ],
+    "house": [
+      "a photo of a house with exterior walls, a roof, windows, and a front door.",
+      "a front-view photo of a detached house with one or more floors.",
+      "a photo of a house with a pitched or flat roof and a visible facade.",
+      "a photo of a brick, wood, stucco, or stone house.",
+      "a photo of a house with a porch, chimney, garage, or fenced yard.",
+      "a photo of a house standing along a residential street or garden.",
+      "a photo of a single home smaller and less fortified than a castle.",
+      "a centered outdoor photo showing the complete house."
+    ],
+    "kangaroo": [
+      "a photo of a kangaroo with very large hind legs and a long muscular tail.",
+      "a side-view photo of a brown or gray kangaroo standing upright.",
+      "a close-up photo of a kangaroo with long pointed ears and a narrow muzzle.",
+      "a photo of a kangaroo hopping with its short forearms held near its chest.",
+      "a photo of a kangaroo balancing on strong feet and its thick tail.",
+      "a photo of a kangaroo in dry grassland, scrub, or open woodland.",
+      "a photo of a female kangaroo carrying a joey in her pouch.",
+      "a centered full-body side profile of one kangaroo."
+    ],
+    "keyboard": [
+      "a photo of a computer keyboard with many small labeled keys in rows.",
+      "a top-view photo of a rectangular keyboard with letters and number keys.",
+      "a side-angle photo of a thin black, white, or gray computer keyboard.",
+      "a close-up photo of keyboard keycaps separated by narrow gaps.",
+      "a photo of a full keyboard with a space bar and arrow keys.",
+      "a photo of a keyboard placed on a desk in front of a monitor.",
+      "a photo of a wired or wireless keyboard with a long horizontal layout.",
+      "a centered product-style photo of one complete computer keyboard."
+    ],
+    "lamp": [
+      "a photo of a lamp with a light source supported by a base or fixture.",
+      "a side-view photo of a table lamp with a shade, stem, and flat base.",
+      "a photo of a floor lamp with a tall narrow stand and bright upper shade.",
+      "a close-up photo of a lamp shade surrounding a glowing bulb.",
+      "a photo of a desk lamp with a bent adjustable arm.",
+      "a photo of a lamp placed on a table, beside a bed, or in a room corner.",
+      "a photo of a switched-on lamp casting warm light around it.",
+      "a centered indoor photo of one complete lamp."
+    ],
+    "lawn_mower": [
+      "a photo of a lawn mower with a low cutting deck and several wheels.",
+      "a side-view photo of a push mower with a long handle extending upward.",
+      "a photo of a powered lawn mower with an engine above its metal deck.",
+      "a front-view photo of a mower showing its wide grass-cutting base.",
+      "a photo of a person pushing a lawn mower across short grass.",
+      "a photo of a lawn mower on a yard, lawn, or garden path.",
+      "a close-up photo of mower wheels, handle bars, and a grass collection bag.",
+      "a centered photo of one complete lawn mower viewed from the side."
+    ],
+    "leopard": [
+      "a photo of a leopard with a muscular golden body covered in dark rosettes.",
+      "a side-view photo of a leopard showing a long spotted tail and strong legs.",
+      "a close-up portrait of a leopard with rounded ears and pale whiskers.",
+      "a photo of a leopard walking low and silently with large paws.",
+      "a photo of a leopard resting on a branch or rocky ground.",
+      "a photo of a leopard in grassland, scrub, or forest vegetation.",
+      "a close-up photo of a leopard's black rosette-shaped markings rather than solid stripes.",
+      "a centered full-body photo of one leopard facing sideways."
+    ],
+    "lion": [
+      "a photo of a lion with a large tan body and powerful legs.",
+      "a photo of a male lion with a thick dark or golden mane around its head.",
+      "a side-view photo of a lioness with a smooth coat and long tufted tail.",
+      "a close-up portrait of a lion with rounded ears and a broad muzzle.",
+      "a photo of a lion standing, walking, or lying in an alert pose.",
+      "a photo of a lion in open grassland, dry scrub, or rocky terrain.",
+      "a photo of a lion with a plain coat rather than rosettes or vertical stripes.",
+      "a centered portrait of one lion looking toward the camera."
+    ],
+    "lizard": [
+      "a photo of a lizard with an elongated scaly body and long tail.",
+      "a side-view photo of a green, brown, gray, or patterned lizard.",
+      "a close-up photo of a lizard showing four splayed legs and clawed toes.",
+      "a photo of a lizard with a triangular head and a visible round eye.",
+      "a photo of a lizard resting flat or climbing with its tail trailing behind.",
+      "a photo of a lizard on rock, bark, sand, or green vegetation.",
+      "a close-up photo of a lizard's fine overlapping scales and throat.",
+      "a centered side profile of one complete lizard."
+    ],
+    "lobster": [
+      "a photo of a lobster with a long armored body and two heavy claws.",
+      "a top-view photo of a dark, brown, blue, or cooked-red lobster.",
+      "a front-view photo of a lobster with very long antennae.",
+      "a photo of a lobster showing a segmented tail and many jointed legs.",
+      "a photo of a lobster holding its unequal claws in front of its body.",
+      "a photo of a lobster on a rocky seabed or near fishing equipment.",
+      "a close-up photo of a lobster's rough shell, eye stalks, and spines.",
+      "a centered photo of one lobster with its tail extended behind it."
+    ],
+    "man": [
+      "a photo of an adult man with mature facial and body proportions.",
+      "a portrait of a man with short, medium, or shaved hair and adult features.",
+      "a full-body photo of a man wearing everyday, business, or outdoor clothing.",
+      "a photo of a man standing, walking, sitting, or working.",
+      "a close-up photo of a man's face with a mature jawline and possible facial hair.",
+      "a photo of an adult male person in an indoor or outdoor setting.",
+      "a photo of a man with a body visibly taller and larger than a young boy.",
+      "a centered portrait of one man looking toward the camera."
+    ],
+    "maple_tree": [
+      "a photo of a maple tree with a branching trunk and broad leafy crown.",
+      "a close-up photo of maple leaves with several pointed lobes.",
+      "a photo of a green maple tree with dense summer foliage.",
+      "a photo of a maple tree with red, orange, or yellow autumn leaves.",
+      "a side-view photo of a maple tree with an irregular rounded canopy.",
+      "a photo of a maple tree growing in a park, yard, or deciduous woodland.",
+      "a close-up photo of opposite maple leaves and winged seed pairs.",
+      "a centered full-tree photo showing the maple's trunk and crown."
+    ],
+    "motorcycle": [
+      "a photo of a motorcycle with two wheels, an engine, and a saddle.",
+      "a side-view photo of a motorcycle showing handlebars and an exposed frame.",
+      "a front-view photo of a motorcycle with one headlight and narrow front tire.",
+      "a photo of a motorcycle resting on a kickstand.",
+      "a photo of a rider leaning or sitting astride a motorcycle.",
+      "a photo of a motorcycle traveling on a road or parked near a curb.",
+      "a close-up photo of a motorcycle engine, exhaust pipe, and fuel tank.",
+      "a centered side profile of one complete motorcycle."
+    ],
+    "mountain": [
+      "a photo of a mountain rising steeply above the surrounding land.",
+      "a wide-view photo of a mountain with a pointed or rounded summit.",
+      "a photo of a rocky mountain with ridges, cliffs, and exposed slopes.",
+      "a photo of a snow-capped mountain beneath a clear or cloudy sky.",
+      "a distant photo of overlapping mountain peaks forming a jagged horizon.",
+      "a landscape photo of a mountain above forest, grassland, or a lake.",
+      "a photo of a mountain whose solid slopes rise higher than a low hill.",
+      "a centered landscape photo dominated by one large mountain peak."
+    ],
+    "mouse": [
+      "a photo of a small mouse animal with a pointed snout and round ears.",
+      "a side-view photo of a gray, brown, white, or black mouse animal with soft fur.",
+      "a close-up photo of a mouse animal showing long whiskers and dark bead-like eyes.",
+      "a photo of a mouse animal standing on four tiny feet with a long thin tail.",
+      "a photo of a mouse animal crouching, sniffing, or holding food in its front paws.",
+      "a photo of a mouse animal on bedding, grass, wood, or a laboratory surface.",
+      "a close-up photo of a mouse animal's delicate paws and hairless tail.",
+      "a centered full-body photo of one mouse animal viewed from the side."
+    ],
+    "mushroom": [
+      "a photo of a mushroom with a rounded cap on top of a short stem.",
+      "a side-view photo of a white, brown, red, or spotted mushroom.",
+      "a close-up photo of a mushroom showing gills beneath its cap.",
+      "a photo of a mushroom with a smooth, scaly, conical, or umbrella-shaped cap.",
+      "a photo of one or several mushrooms emerging upright from the ground.",
+      "a photo of a mushroom growing in soil, moss, grass, or forest litter.",
+      "a close-up photo of a mushroom's fleshy texture and curved cap edge.",
+      "a centered macro photo of one complete mushroom from cap to base."
+    ],
+    "oak_tree": [
+      "a photo of an oak tree with a thick trunk and broad spreading crown.",
+      "a close-up photo of oak leaves with rounded or pointed lobes.",
+      "a photo of a mature oak with heavy twisting branches.",
+      "a photo of a green oak tree with dense deciduous foliage.",
+      "a side-view photo of an oak tree with a wide irregular canopy.",
+      "a photo of an oak tree growing in a field, park, or woodland.",
+      "a close-up photo of rough oak bark, lobed leaves, or acorns.",
+      "a centered full-tree photo showing the oak's strong trunk and crown."
+    ],
+    "orange": [
+      "a photo of an orange citrus fruit with a round compact body.",
+      "a close-up photo of an orange fruit with bright orange dimpled rind.",
+      "a side-view photo of a whole orange fruit with a small stem scar.",
+      "a photo of an orange fruit with one glossy green leaf attached.",
+      "a photo of a sliced orange fruit showing radial juicy segments.",
+      "a photo of one or several orange fruits resting on a table or in a fruit bowl.",
+      "a close-up photo of an orange's textured citrus peel rather than smooth apple skin.",
+      "a centered product-style photo of one whole orange fruit."
+    ],
+    "orchid": [
+      "a close-up photo of an orchid flower with broad waxy petals.",
+      "a photo of a white, pink, purple, yellow, or spotted orchid bloom.",
+      "a front-view photo of an orchid with bilateral symmetry and a central lip.",
+      "a side-view photo of an orchid showing petals around a protruding center.",
+      "a photo of several orchid flowers arranged along a curved stem.",
+      "a photo of an orchid growing in a pot, greenhouse, or tropical setting.",
+      "a close-up photo of an orchid's patterned throat and smooth rounded petals.",
+      "a centered macro photo of one open orchid blossom."
+    ],
+    "otter": [
+      "a photo of an otter with a long low body and dense brown fur.",
+      "a side-view photo of an otter showing short legs and a thick tapering tail.",
+      "a close-up photo of an otter's rounded face, small ears, and long whiskers.",
+      "a photo of an otter swimming with its head and upper back above water.",
+      "a photo of an otter floating on its back and holding food on its chest.",
+      "a photo of an otter beside a river, lake, rocky coast, or wet bank.",
+      "a close-up photo of an otter with webbed paws and a dark broad nose.",
+      "a centered photo of one otter in or beside water."
+    ],
+    "palm_tree": [
+      "a photo of a palm tree with a tall slender trunk and crown of large fronds.",
+      "a low-angle photo of a palm tree with feather-like leaves spreading overhead.",
+      "a side-view photo of a palm tree with a curved or straight unbranched trunk.",
+      "a photo of a palm tree bearing coconuts or clusters of fruit below its leaves.",
+      "a photo of one or several palms forming a tropical silhouette.",
+      "a photo of a palm tree on a beach, warm street, or dry landscape.",
+      "a close-up photo of a palm's ringed trunk and long divided fronds.",
+      "a centered full-tree photo of one palm against the sky."
+    ],
+    "pear": [
+      "a photo of a pear with a rounded base and narrower neck.",
+      "a photo of a green, yellow, red, or brown pear with smooth or speckled skin.",
+      "a side-view photo of a pear with a short curved stem.",
+      "a close-up photo of a pear showing its bottom-heavy bell shape.",
+      "a photo of a whole pear with one small leaf attached to the stem.",
+      "a photo of a pear standing upright on a plain surface.",
+      "a photo of a pear whose tapered top separates it from a round apple.",
+      "a centered product-style photo of one complete pear."
+    ],
+    "pickup_truck": [
+      "a photo of a pickup truck with an enclosed cab and open rear cargo bed.",
+      "a side-view photo of a pickup truck showing four wheels and a raised body.",
+      "a front-view photo of a pickup truck with a broad grille and headlights.",
+      "a photo of a two-door or four-door pickup with a tailgate behind the cab.",
+      "a photo of a pickup truck carrying tools or cargo in its rear bed.",
+      "a photo of a pickup truck driving on a road, farm, or rough track.",
+      "a photo of a pickup truck shorter than a bus and shaped around a separate cargo box.",
+      "a centered front-side photo of one complete pickup truck."
+    ],
+    "pine_tree": [
+      "a photo of a pine tree with a tall conical evergreen crown.",
+      "a close-up photo of pine branches covered with long narrow needles.",
+      "a side-view photo of a pine tree with layered horizontal branches.",
+      "a photo of a dark green pine with a straight vertical trunk.",
+      "a photo of a pine tree bearing brown woody cones among its needles.",
+      "a photo of pine trees growing in mountain, forest, or snowy terrain.",
+      "a photo of a pine whose needle foliage remains green rather than broad and lobed.",
+      "a centered full-tree photo showing the pine's pointed silhouette."
+    ],
+    "plain": [
+      "a landscape photo of a broad flat grassy plain with a low horizon.",
+      "a wide-view photo of an open plain covered by short green or dry grass.",
+      "a photo of a level plain with very few trees or buildings.",
+      "a photo of an expansive plain stretching toward a distant sky.",
+      "a landscape photo of a plain with subtle rolling ground but no high peaks.",
+      "a photo of grazing animals scattered across an open grassy plain.",
+      "a photo of a plain forming a wide horizontal band beneath the sky.",
+      "a centered landscape photo dominated by unobstructed flat terrain."
+    ],
+    "plate": [
+      "a photo of a dining plate with a broad flat center and raised rim.",
+      "a top-view photo of a round white, colored, ceramic, or metal dining plate.",
+      "a side-view photo of a shallow dining plate resting on a flat base.",
+      "a photo of an empty dining plate with a smooth circular outline.",
+      "a photo of a dining plate holding food arranged across its center.",
+      "a photo of a dining plate placed on a table beside utensils.",
+      "a photo of a dining plate shallower and wider than a deep bowl.",
+      "a centered overhead photo of one complete dining plate."
+    ],
+    "poppy": [
+      "a close-up photo of a poppy flower with broad delicate petals.",
+      "a photo of a red, orange, yellow, white, or pink poppy bloom.",
+      "a front-view photo of a poppy with a dark cluster of stamens at its center.",
+      "a side-view photo of a poppy on a thin slightly hairy stem.",
+      "a photo of a poppy with four to six crinkled cup-shaped petals.",
+      "a photo of poppies growing in a sunny field or garden.",
+      "a close-up photo of a poppy beside its rounded seed capsule.",
+      "a centered macro photo of one open poppy blossom."
+    ],
+    "porcupine": [
+      "a photo of a porcupine with a stocky body covered in long sharp quills.",
+      "a side-view photo of a brown, black, or pale porcupine walking low to the ground.",
+      "a close-up photo of a porcupine's blunt face, small ears, and dark nose.",
+      "a photo of a porcupine with quills raised into a spiky outline.",
+      "a photo of a porcupine standing on short strong legs with curved claws.",
+      "a photo of a porcupine among rocks, branches, grass, or woodland floor.",
+      "a close-up photo of the contrasting light and dark bands on porcupine quills.",
+      "a centered side profile of one complete porcupine."
+    ],
+    "possum": [
+      "a photo of a possum with a gray furry body and pointed pale face.",
+      "a side-view photo of a possum showing a long mostly hairless tail.",
+      "a close-up photo of a possum with dark round ears and a pink nose.",
+      "a photo of a possum standing low on four feet with grasping toes.",
+      "a photo of a possum climbing a branch or walking along the ground.",
+      "a photo of a possum in woodland, grass, or a nighttime suburban setting.",
+      "a close-up photo of a possum's long whiskers and narrow muzzle.",
+      "a centered side profile of one possum with its tail visible."
+    ],
+    "rabbit": [
+      "a photo of a rabbit with long upright ears and a compact furry body.",
+      "a side-view photo of a white, brown, gray, black, or spotted rabbit.",
+      "a close-up photo of a rabbit with large side-facing eyes and a twitching nose.",
+      "a photo of a rabbit sitting on large folded hind legs.",
+      "a photo of a rabbit hopping with its short forelegs extended.",
+      "a photo of a rabbit in grass, a garden, woodland, or a simple enclosure.",
+      "a close-up photo of a rabbit's soft fur, whiskers, and small round tail.",
+      "a centered full-body photo of one rabbit facing partly sideways."
+    ],
+    "raccoon": [
+      "a photo of a raccoon with gray fur and a black mask across its eyes.",
+      "a side-view photo of a raccoon showing a bushy ringed tail.",
+      "a close-up portrait of a raccoon with rounded ears and a pointed muzzle.",
+      "a photo of a raccoon standing on short legs with nimble front paws.",
+      "a photo of a raccoon climbing, crouching, or holding an object.",
+      "a photo of a raccoon in woodland or a nighttime suburban setting.",
+      "a close-up photo of the raccoon's alternating light and dark tail bands.",
+      "a centered photo of one raccoon facing toward the camera."
+    ],
+    "ray": [
+      "an underwater photo of a ray fish with a broad flat diamond-shaped body.",
+      "a top-view photo of a gray, brown, spotted, or blue stingray fish.",
+      "a side-angle photo of a ray fish with wide wing-like pectoral fins.",
+      "a photo of a ray fish showing a very long thin trailing tail.",
+      "a photo of a ray fish gliding with its flat fins curved gently upward.",
+      "an underwater photo of a ray fish above sand, coral, or open blue water.",
+      "a close-up photo of a ray fish with eyes and spiracles on its upper surface.",
+      "a centered top profile of one stingray fish from wing tip to wing tip."
+    ],
+    "road": [
+      "a photo of a road forming a long paved route through the scene.",
+      "a forward-view photo of a road with lane markings converging in the distance.",
+      "a photo of a gray asphalt road bordered by shoulders, curbs, or grass.",
+      "a photo of a straight or curving road with traffic signs and guardrails.",
+      "a photo taken from road level showing a broad drivable surface.",
+      "a landscape photo of a road crossing a city, countryside, forest, or hills.",
+      "a photo of a road with vehicles traveling in marked lanes.",
+      "a centered perspective photo dominated by a road leading toward the horizon."
+    ],
+    "rocket": [
+      "a photo of a rocket with a tall narrow cylindrical body and pointed nose cone.",
+      "a side-view photo of a white, silver, or painted rocket with stabilizing fins.",
+      "a low-angle photo of a rocket standing vertically on a launch pad.",
+      "a photo of a rocket with several stacked stages and engine nozzles below.",
+      "a photo of a rocket lifting off with bright exhaust and smoke.",
+      "a photo of a rocket against open sky, space, or launch equipment.",
+      "a close-up photo of a rocket body marked by bands, panels, or a national emblem.",
+      "a centered full-length photo of one rocket pointing upward."
+    ],
+    "rose": [
+      "a close-up photo of a rose with many overlapping curled petals.",
+      "a photo of a red, pink, white, yellow, or orange rose bloom.",
+      "a front-view photo of a rose showing tightly layered petals around its center.",
+      "a side-view photo of a rose on a woody green stem with thorns.",
+      "a photo of a rosebud partly opened beside dark serrated leaves.",
+      "a photo of roses growing in a garden or arranged as cut flowers.",
+      "a close-up photo of the rose's dense spiral petal pattern.",
+      "a centered macro photo of one open rose blossom."
+    ],
+    "sea": [
+      "a wide landscape photo of the sea with open water extending to the horizon.",
+      "a photo of blue, green, or gray seawater with repeating surface waves.",
+      "a photo of the sea meeting the sky along a long horizontal line.",
+      "a photo of rolling ocean waves with white foam near the shore.",
+      "a distant photo of calm sea water reflecting sunlight or clouds.",
+      "a coastal photo of the sea beside sand, cliffs, rocks, or boats.",
+      "a photo of the sea forming a continuous water surface rather than a narrow river.",
+      "a centered seascape dominated by open water and sky."
+    ],
+    "seal": [
+      "a photo of a marine seal animal with a smooth rounded body and flippers.",
+      "a side-view photo of a gray, brown, spotted, or pale seal animal.",
+      "a close-up photo of a seal animal with large dark eyes and long whiskers.",
+      "a photo of a seal animal resting on its belly with short front flippers.",
+      "a photo of a seal animal swimming with its head above the water.",
+      "a photo of a seal animal on a beach, ice, rock, or coastal water.",
+      "a close-up photo of a marine seal animal's rounded muzzle and earless head shape.",
+      "a centered full-body photo of one marine seal animal."
+    ],
+    "shark": [
+      "an underwater photo of a shark with a streamlined body and tall dorsal fin.",
+      "a side-view photo of a gray or blue shark with pointed pectoral fins.",
+      "a close-up photo of a shark's blunt or pointed snout and rows of teeth.",
+      "a photo of a shark swimming with its vertical crescent-shaped tail.",
+      "a photo of a shark with visible gill slits behind its head.",
+      "an underwater photo of a shark moving through open blue water or near a reef.",
+      "a photo of a shark with a pale belly and darker upper body.",
+      "a centered side profile of one complete shark."
+    ],
+    "shrew": [
+      "a photo of a tiny shrew animal with a very long pointed snout.",
+      "a side-view photo of a brown, gray, or black shrew with dense short fur.",
+      "a close-up photo of a shrew with tiny eyes and nearly hidden ears.",
+      "a photo of a shrew standing low on short legs with a narrow tail.",
+      "a photo of a shrew sniffing rapidly through leaves or grass.",
+      "a photo of a shrew animal on soil, moss, woodland litter, or stones.",
+      "a close-up photo of a shrew's whiskers and flexible pointed nose.",
+      "a centered side profile of one small shrew animal."
+    ],
+    "skunk": [
+      "a photo of a skunk with black fur and bold white stripes along its back.",
+      "a side-view photo of a skunk with a stocky low body and bushy tail.",
+      "a close-up photo of a skunk with a narrow face and white forehead stripe.",
+      "a photo of a skunk walking on short legs with its tail raised.",
+      "a photo of a skunk displaying a large plume-like black-and-white tail.",
+      "a photo of a skunk in grass, woodland, or a nighttime suburban area.",
+      "a close-up photo of the skunk's sharply contrasting coat pattern.",
+      "a centered full-body photo of one skunk viewed from the side."
+    ],
+    "skyscraper": [
+      "a photo of a skyscraper rising much taller than nearby buildings.",
+      "a low-angle photo of a skyscraper with many repeated window rows.",
+      "a front-view photo of a glass, steel, or concrete skyscraper facade.",
+      "a photo of a skyscraper with a narrow vertical form and flat or pointed roof.",
+      "a distant photo of several skyscrapers forming a dense city skyline.",
+      "a photo of a skyscraper surrounded by streets and shorter urban buildings.",
+      "a photo of a skyscraper whose many floors create strong repeated horizontal lines.",
+      "a centered upward-looking photo dominated by one very tall skyscraper."
+    ],
+    "snail": [
+      "a close-up photo of a snail with a soft body and coiled shell.",
+      "a side-view photo of a brown, yellow, or patterned snail moving slowly.",
+      "a close-up photo of a snail showing two long eye stalks and two shorter feelers.",
+      "a photo of a snail with a spiral shell carried above its broad foot.",
+      "a photo of a snail leaving a shiny trail across a surface.",
+      "a macro photo of a snail on a leaf, stem, rock, or damp ground.",
+      "a close-up photo of the shell's circular spiral and the snail's textured skin.",
+      "a centered side profile of one complete snail."
+    ],
+    "snake": [
+      "a photo of a snake with a long limbless body covered in scales.",
+      "a photo of a green, brown, black, yellow, or patterned snake.",
+      "a close-up photo of a snake's head with unblinking eyes and forked tongue.",
+      "a photo of a snake coiled into loops or stretched in an S-shaped curve.",
+      "a side-view photo of a snake moving with its head slightly raised.",
+      "a photo of a snake on rock, sand, grass, branches, or forest floor.",
+      "a close-up photo of repeated bands, blotches, or diamond markings on snake scales.",
+      "a centered full-body photo of one snake's winding silhouette."
+    ],
+    "spider": [
+      "a close-up photo of a spider with eight long jointed legs.",
+      "a top-view photo of a black, brown, colorful, or patterned spider.",
+      "a macro photo of a spider showing two main body sections.",
+      "a photo of a spider with legs radiating around a compact central body.",
+      "a photo of a spider resting, crawling, or hanging from silk.",
+      "a photo of a spider on a web, leaf, wall, or ground.",
+      "a close-up photo of a spider's multiple eyes, hairs, and small mouthparts.",
+      "a centered macro photo of one spider with all eight legs visible."
+    ],
+    "squirrel": [
+      "a photo of a squirrel with a small agile body and large bushy tail.",
+      "a side-view photo of a gray, red, brown, or black squirrel.",
+      "a close-up photo of a squirrel with rounded ears, dark eyes, and whiskers.",
+      "a photo of a squirrel sitting upright and holding food in its front paws.",
+      "a photo of a squirrel climbing a trunk or leaping between branches.",
+      "a photo of a squirrel on a tree, lawn, park path, or woodland floor.",
+      "a close-up photo of a squirrel's curved claws and long fluffy tail hairs.",
+      "a centered photo of one squirrel with its tail arched behind it."
+    ],
+    "streetcar": [
+      "a photo of a streetcar running on metal rails along a city street.",
+      "a side-view photo of a streetcar with a long passenger body and many windows.",
+      "a front-view photo of a streetcar with a broad windshield and route display.",
+      "a photo of a streetcar connected to overhead electric wires.",
+      "a photo of a streetcar stopping for passengers at an urban platform.",
+      "a photo of a streetcar traveling among cars, buildings, and road markings.",
+      "a photo of a streetcar whose wheels follow embedded rails rather than free road lanes.",
+      "a centered front-side photo of one complete streetcar."
+    ],
+    "sunflower": [
+      "a close-up photo of a sunflower with a large dark circular center.",
+      "a front-view photo of a sunflower surrounded by bright yellow pointed petals.",
+      "a side-view photo of a sunflower on a tall thick green stem.",
+      "a photo of a sunflower with broad rough heart-shaped leaves.",
+      "a photo of one sunflower head turned toward bright daylight.",
+      "a photo of sunflowers growing together in a field or garden.",
+      "a close-up photo of the sunflower's dense spiral seed pattern.",
+      "a centered macro photo of one fully open sunflower."
+    ],
+    "sweet_pepper": [
+      "a photo of a sweet bell pepper with a hollow blocky fruit body.",
+      "a photo of a red, green, yellow, or orange sweet pepper with glossy skin.",
+      "a side-view photo of a sweet pepper with several rounded vertical lobes.",
+      "a top-view photo of a sweet pepper with a short thick green stem.",
+      "a photo of a whole sweet pepper resting on a kitchen surface.",
+      "a photo of a sliced sweet pepper showing pale ribs and clustered seeds.",
+      "a close-up photo of a bell pepper's smooth firm skin and blunt base.",
+      "a centered product-style photo of one complete sweet pepper."
+    ],
+    "table": [
+      "a photo of a table with a broad flat horizontal top and supporting base.",
+      "a front-view photo of a wooden, metal, glass, or plastic table.",
+      "a side-view photo of a table showing four legs or one central pedestal.",
+      "a photo of a dining table large enough to place several objects or settings.",
+      "a photo of an empty table with its complete rectangular or round top visible.",
+      "a photo of a table surrounded by chairs in a room or outdoor area.",
+      "a close-up photo of a tabletop edge and supporting legs beneath it.",
+      "a centered indoor photo showing one complete table."
+    ],
+    "tank": [
+      "a photo of an armored military tank with a tracked lower body.",
+      "a side-view photo of a military tank showing continuous tracks and multiple road wheels.",
+      "a front-view photo of a tank with a low armored hull and heavy sloped plates.",
+      "a photo of an armored tank with a rotating turret and long cannon barrel.",
+      "a photo of a military tank moving across rough ground with its gun facing forward.",
+      "a photo of a military tank in a field, desert, road, or display area.",
+      "a close-up photo of a tank's metal tracks, turret hatch, and armored surfaces.",
+      "a centered full-vehicle photo of one armored military battle tank."
+    ],
+    "telephone": [
+      "a photo of a telephone with a handset and a base for making calls.",
+      "a front-view photo of a desk telephone with numbered buttons or a rotary dial.",
+      "a side-view photo of a telephone handset curved between earpiece and mouthpiece.",
+      "a photo of a corded telephone with a coiled cable attached to its base.",
+      "a photo of a cordless or mobile telephone with a keypad and small screen.",
+      "a photo of a telephone resting on a desk, wall mount, or bedside table.",
+      "a close-up photo of telephone number keys and call controls.",
+      "a centered product-style photo of one complete telephone."
+    ],
+    "television": [
+      "a photo of a television with a large rectangular display and dark bezel.",
+      "a front-view photo of a flat-screen television on a stand or wall.",
+      "a side-view photo of a television showing its thin screen and support base.",
+      "a photo of a television displaying a colorful program or image.",
+      "a photo of an older box-shaped television with a thick cabinet.",
+      "a photo of a television placed in a living room or on a media cabinet.",
+      "a close-up photo of a television screen, frame, indicator light, and controls.",
+      "a centered straight-on photo of one complete television."
+    ],
+    "tiger": [
+      "a photo of a tiger with a large orange body covered in black vertical stripes.",
+      "a side-view photo of a tiger showing a long striped tail and powerful legs.",
+      "a close-up portrait of a tiger with white cheek fur and rounded ears.",
+      "a photo of a tiger walking, crouching, or lying with large paws visible.",
+      "a photo of a tiger with dark stripes crossing its face, back, and limbs.",
+      "a photo of a tiger in grass, forest, water, or rocky habitat.",
+      "a close-up photo of the tiger's orange coat and bold narrow stripes.",
+      "a centered full-body photo of one tiger facing partly sideways."
+    ],
+    "tractor": [
+      "a photo of a farm tractor with two very large rear wheels.",
+      "a side-view photo of a tractor showing smaller front wheels and exposed chassis.",
+      "a front-view photo of a tractor with an engine hood and enclosed or open cab.",
+      "a photo of a green, red, blue, or orange tractor with heavy treaded tires.",
+      "a photo of a tractor pulling a plow, trailer, or other farm equipment.",
+      "a photo of a tractor working in a field, farmyard, or dirt track.",
+      "a close-up photo of a tractor's deep tire treads, exhaust pipe, and hitch.",
+      "a centered side profile of one complete agricultural tractor."
+    ],
+    "train": [
+      "a photo of a railway train made of a locomotive and connected cars.",
+      "a side-view photo of a long train with repeated windows or freight containers.",
+      "a front-view photo of a train centered on two steel rails.",
+      "a photo of a passenger or freight train with many wheel assemblies below.",
+      "a photo of a train entering a station, crossing, tunnel, or curved track.",
+      "a photo of a train traveling through a city, countryside, or mountain landscape.",
+      "a close-up photo of a train's locomotive nose, lights, coupler, and windshield.",
+      "a centered perspective photo of one railway train approaching along tracks."
+    ],
+    "trout": [
+      "a photo of a trout fish with a streamlined body and small scales.",
+      "a side-view photo of a silver, brown, green, or rainbow-colored trout.",
+      "a close-up photo of a trout with dark spots along its back and sides.",
+      "a photo of a trout showing a forked tail and several distinct fins.",
+      "a photo of a trout swimming horizontally or held above the water.",
+      "a photo of a trout in a clear river, lake, stream, or fishing scene.",
+      "a close-up photo of a trout's pale belly, round eye, and slightly open mouth.",
+      "a centered side profile of one complete trout fish."
+    ],
+    "tulip": [
+      "a close-up photo of a tulip with a smooth cup-shaped flower.",
+      "a photo of a red, yellow, pink, purple, white, or orange tulip.",
+      "a front-view photo of a tulip with six broad overlapping petals.",
+      "a side-view photo of a tulip bloom on a straight fleshy stem.",
+      "a photo of a tulip with long blade-shaped green leaves near its base.",
+      "a photo of tulips growing in a garden bed or arranged as cut flowers.",
+      "a close-up photo of a tulip's clean petal edges and simple cup silhouette.",
+      "a centered macro photo of one upright tulip."
+    ],
+    "turtle": [
+      "a photo of a turtle with a hard rounded shell and four short limbs.",
+      "a side-view photo of a green, brown, or patterned turtle.",
+      "a top-view photo of a turtle showing plates across its oval shell.",
+      "a close-up photo of a turtle's small head, beak-like mouth, and scaly neck.",
+      "a photo of a turtle walking slowly or swimming with limbs extended.",
+      "a photo of a turtle on sand, rock, grass, or in clear water.",
+      "a close-up photo of a turtle's shell pattern, claws, and short tail.",
+      "a centered full-body photo of one turtle with its shell clearly visible."
+    ],
+    "wardrobe": [
+      "a photo of a wardrobe with a tall enclosed cabinet for storing clothes.",
+      "a front-view photo of a wooden or painted wardrobe with two large doors.",
+      "a side-view photo of a wardrobe showing its deep rectangular body.",
+      "a photo of a wardrobe with handles, drawers, shelves, or a mirrored panel.",
+      "a photo of an open wardrobe containing hanging clothes.",
+      "a photo of a wardrobe standing upright against a bedroom wall.",
+      "a photo of a wardrobe taller and more enclosed than a low table or couch.",
+      "a centered indoor photo showing one complete wardrobe."
+    ],
+    "whale": [
+      "a photo of a whale with an enormous streamlined body and horizontal tail flukes.",
+      "a side-view photo of a dark gray, blue, or black whale near the surface.",
+      "a photo of a whale showing a small dorsal fin and broad tail.",
+      "a photo of a whale surfacing with its blowhole and back above the water.",
+      "a photo of a whale raising its tail flukes before a deep dive.",
+      "a photo of a whale swimming through open ocean water.",
+      "a distant photo showing the whale's scale compared with a boat or coastline.",
+      "a centered side profile of one whale from head to tail."
+    ],
+    "willow_tree": [
+      "a photo of a willow tree with long flexible branches hanging downward.",
+      "a side-view photo of a willow with a broad rounded crown and drooping foliage.",
+      "a close-up photo of narrow willow leaves along thin trailing twigs.",
+      "a photo of a willow tree with a thick trunk and curtain-like green branches.",
+      "a photo of a mature willow whose leaves nearly reach the ground.",
+      "a photo of a willow tree growing beside a pond, river, park, or damp field.",
+      "a photo of a willow's hanging silhouette rather than upright conifer branches.",
+      "a centered full-tree photo showing the willow's trunk and trailing crown."
+    ],
+    "wolf": [
+      "a photo of a wolf with a large lean canine body and thick fur.",
+      "a side-view photo of a gray, white, black, or brown wolf with long legs.",
+      "a close-up portrait of a wolf with pointed ears, amber eyes, and long muzzle.",
+      "a photo of a wolf standing alert with its bushy tail held low.",
+      "a photo of a wolf walking, running, or howling with its head raised.",
+      "a photo of a wolf in forest, snow, grassland, or rocky wilderness.",
+      "a close-up photo of a wolf's heavy neck ruff and broad paws.",
+      "a centered full-body photo of one wolf facing partly toward the camera."
+    ],
+    "woman": [
+      "a photo of an adult woman with mature facial and body proportions.",
+      "a portrait of a woman with short, medium, or long hair and adult features.",
+      "a full-body photo of a woman wearing everyday, business, or outdoor clothing.",
+      "a photo of a woman standing, walking, sitting, or working.",
+      "a close-up photo of a woman's face with a mature jawline and smooth or lined skin.",
+      "a photo of an adult female person in an indoor or outdoor setting.",
+      "a photo of a woman with a body visibly taller and larger than a young girl.",
+      "a centered portrait of one woman looking toward the camera."
+    ],
+    "worm": [
+      "a close-up photo of a worm with a long soft cylindrical body and no legs.",
+      "a photo of a pink, red-brown, tan, or pale worm with moist skin.",
+      "a side-view photo of a worm showing many subtle ring-like body segments.",
+      "a photo of an earthworm with a thicker band around part of its body.",
+      "a photo of a worm stretched, curled, or bending across a surface.",
+      "a macro photo of a worm on damp soil, compost, leaf litter, or a leaf.",
+      "a close-up photo of a worm's tapered ends and smooth flexible outline.",
+      "a centered macro photo of one complete worm forming a curved line."
+    ]
+  }
+}

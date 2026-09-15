@@ -1,0 +1,755 @@
+diff --git a/backbone/topecl_net.py b/backbone/topecl_net.py
+index e6e981e..e2ec4fb 100644
+--- a/backbone/topecl_net.py
++++ b/backbone/topecl_net.py
+@@ -82,7 +82,15 @@ class Mlp(nn.Module):
+ 
+ 
+ class TOPECLNet(nn.Module):
+-    def __init__(self, logger, feature_extractor: nn.Module, fix_proto=True, mlp1_dim=512, mlp2_dim=64) -> None:
++    def __init__(
++        self,
++        logger,
++        feature_extractor: nn.Module,
++        fix_proto=True,
++        mlp1_dim=512,
++        mlp2_dim=64,
++        append_proto_scale=4,
++    ) -> None:
+         super().__init__()
+         self.logger = logger
+         self.feature_extractor = feature_extractor
+@@ -98,6 +106,9 @@ class TOPECLNet(nn.Module):
+         self.ori_textemb = None
+         self.proto_textemb = None
+         self.fix_proto = fix_proto
++        self.append_proto_scale = int(append_proto_scale)
++        if self.append_proto_scale < 1:
++            raise ValueError('append_proto_scale must be at least 1')
+         self.textemb_keep_rate = 1.0
+         self.proto_orth = nn.Parameter(get_orth(fdim, fdim), requires_grad=False) # make max_classes==feature_dim
+         self.proto_orth = None
+@@ -170,7 +181,6 @@ class TOPECLNet(nn.Module):
+             for n, p in self.old_adapter2.named_parameters():
+                 p.requires_grad = False
+         self.knowncls += textemb.size(0)
+-        self.append_proto_scale = 4
+         self.old_proto_orth = copy.deepcopy(self.proto_orth)
+         self.proto_orth = nn.Parameter(get_orth(self.knowncls*self.append_proto_scale, self.knowncls*self.append_proto_scale), requires_grad=False)
+         self.proto_orth.requires_grad = False
+@@ -248,4 +258,4 @@ class TOPECLNet(nn.Module):
+         else:
+             predict = predict_textemb if LCLS else predict_etf
+         return predict, {'features': fea1 if LCLS else fea2}
+-        # return predict_etf, {'features': fea2}
+\ No newline at end of file
++        # return predict_etf, {'features': fea2}
+diff --git a/datasets/cifar100.py b/datasets/cifar100.py
+index c6bd88f..b4901c7 100755
+--- a/datasets/cifar100.py
++++ b/datasets/cifar100.py
+@@ -3,6 +3,46 @@ from datasets.idata import iData
+ import os
+ import numpy as np
+ 
++
++def _load_huggingface_archive(archive_path):
++    """Load the one-time converted Hugging Face CIFAR-100 cache."""
++    if not os.path.isfile(archive_path):
++        raise FileNotFoundError(
++            "CIFAR100_HF_ARCHIVE points to a missing file: {}. "
++            "Run scripts/prepare_local_cifar100.ps1 first.".format(archive_path)
++        )
++    with np.load(archive_path, allow_pickle=False) as archive:
++        required = {
++            'train_data', 'train_targets', 'test_data', 'test_targets',
++            'class_names'
++        }
++        missing = required.difference(archive.files)
++        if missing:
++            raise ValueError(
++                'Hugging Face CIFAR-100 archive is missing: {}'.format(
++                    sorted(missing)
++                )
++            )
++        train_data = archive['train_data']
++        train_targets = archive['train_targets']
++        test_data = archive['test_data']
++        test_targets = archive['test_targets']
++        class_names = archive['class_names'].tolist()
++
++    if train_data.shape != (50000, 32, 32, 3):
++        raise ValueError('invalid CIFAR-100 train image shape: {}'.format(train_data.shape))
++    if test_data.shape != (10000, 32, 32, 3):
++        raise ValueError('invalid CIFAR-100 test image shape: {}'.format(test_data.shape))
++    if len(class_names) != 100 or len(set(class_names)) != 100:
++        raise ValueError('CIFAR-100 archive must contain 100 unique class names')
++    return (
++        train_data,
++        train_targets.astype(np.int64, copy=False),
++        test_data,
++        test_targets.astype(np.int64, copy=False),
++        {str(name): index for index, name in enumerate(class_names)},
++    )
++
+ class CIFAR100(iData):
+     '''
+     Dataset Name:   CIFAR-100 dataset (Canadian Institute for Advanced Research, 100 classes)
+@@ -43,6 +83,13 @@ class CIFAR100(iData):
+         self.class_order = np.arange(100).tolist()
+ 
+     def download_data(self):
++        hf_archive = os.environ.get('CIFAR100_HF_ARCHIVE')
++        if hf_archive:
++            self.train_data, self.train_targets, self.test_data, \
++                self.test_targets, self.class_to_idx = \
++                _load_huggingface_archive(hf_archive)
++            return
++
+         train_dataset = datasets.cifar.CIFAR100(os.environ['DATA'], train=True, download=True)
+         test_dataset = datasets.cifar.CIFAR100(os.environ['DATA'], train=False, download=True)
+         
+@@ -82,4 +129,4 @@ class CIFAR100(iData):
+         #     self.class_to_idx[key] = value
+ 
+         self.train_data, self.train_targets = train_dataset.data, np.array(train_dataset.targets)
+-        self.test_data, self.test_targets = test_dataset.data, np.array(test_dataset.targets)
+\ No newline at end of file
++        self.test_data, self.test_targets = test_dataset.data, np.array(test_dataset.targets)
+diff --git a/main.py b/main.py
+index fcca27a..f1dde00 100755
+--- a/main.py
++++ b/main.py
+@@ -20,6 +20,38 @@ def set_random(seed):
+     torch.backends.cudnn.deterministic = True
+     torch.backends.cudnn.benchmark = False
+ 
++
++def apply_screening_task_limit(config, data_manager, logger=None):
++    """Restrict a diagnostic run to the first N original incremental tasks."""
++    increments = list(data_manager.increment_steps)
++    limit = getattr(config, 'screening_task_limit', None)
++    if limit is None:
++        selected = increments
++    else:
++        limit = int(limit)
++        if limit < 1 or limit > len(increments):
++            raise ValueError(
++                'screening_task_limit must be between 1 and {}'.format(
++                    len(increments)
++                )
++            )
++        selected = increments[:limit]
++        if logger is not None:
++            logger.info(
++                'Screening task limit active: running first {}/{} tasks with '
++                'increments {}'.format(limit, len(increments), selected)
++            )
++    config.update({
++        'total_class_num': data_manager.total_classes,
++        'run_class_count': sum(selected),
++        'source_task_count': len(increments),
++        'nb_tasks': len(selected),
++        'increment_steps': selected,
++        'img_size': data_manager.img_size,
++        'validation_split': getattr(data_manager, 'validation_info', None),
++    })
++    return len(selected)
++
+ if __name__ == '__main__':
+     config = Config()
+     os.environ['CUDA_VISIBLE_DEVICES']=config.device
+@@ -67,15 +99,22 @@ if __name__ == '__main__':
+ 
+                 set_random(seed)
+                 data_manager = DataManager(logger, temp_config.dataset, temp_config.img_size, temp_config.split_dataset,
+-                        temp_config.shuffle, temp_config.seed, temp_config.init_cls, temp_config.increment, temp_config.use_valid)
++                        temp_config.shuffle, temp_config.seed, temp_config.init_cls, temp_config.increment, temp_config.use_valid,
++                        getattr(temp_config, 'validation_samples_per_class', 0) or 0,
++                        getattr(temp_config, 'validation_seed', 3407) or 3407)
++                run_task_count = apply_screening_task_limit(
++                    temp_config, data_manager, logger
++                )
+                 temp_config.print_config(logger)
+                 logger.init_visual_log(temp_config)
+                 trainer = methods.get_trainer(logger, temp_config)
+                 trainer.set_save_models(False)
+ 
+-                is_resume = (data_manager.nb_tasks > len(seed_checkpoint_paths[seed].keys()) )
++                is_resume = (
++                    run_task_count > len(seed_checkpoint_paths[seed].keys())
++                )
+             
+-                for task_id in range(data_manager.nb_tasks):
++                for task_id in range(run_task_count):
+                     trainer.prepare_task_data(data_manager)
+                     if task_id in seed_checkpoint_paths[seed].keys():
+                         trainer.set_save_models(False)
+@@ -121,16 +160,19 @@ if __name__ == '__main__':
+                 logger.info('seed list ready to apply: {}'.format(seed_list))
+                 set_random(seed)
+                 data_manager = DataManager(logger, temp_config.dataset, temp_config.img_size, temp_config.split_dataset,
+-                        temp_config.shuffle, temp_config.seed, temp_config.init_cls, temp_config.increment, temp_config.use_valid)
+-                temp_config.update({'total_class_num':data_manager.total_classes, 'nb_tasks':data_manager.nb_tasks,
+-                            'increment_steps':data_manager.increment_steps, 'img_size':data_manager.img_size})
++                        temp_config.shuffle, temp_config.seed, temp_config.init_cls, temp_config.increment, temp_config.use_valid,
++                        getattr(temp_config, 'validation_samples_per_class', 0) or 0,
++                        getattr(temp_config, 'validation_seed', 3407) or 3407)
++                run_task_count = apply_screening_task_limit(
++                    temp_config, data_manager, logger
++                )
+                 temp_config.print_config(logger)
+ 
+                 logger.init_visual_log(temp_config)
+ 
+                 trainer = methods.get_trainer(logger, temp_config)
+ 
+-                while trainer.cur_taskID < data_manager.nb_tasks - 1:
++                while trainer.cur_taskID < run_task_count - 1:
+                     trainer.prepare_task_data(data_manager)
+                     trainer.prepare_model()
+                     trainer.incremental_train()
+diff --git a/methods/multi_steps/finetune_il.py b/methods/multi_steps/finetune_il.py
+index ace4ece..7036de1 100755
+--- a/methods/multi_steps/finetune_il.py
++++ b/methods/multi_steps/finetune_il.py
+@@ -50,6 +50,11 @@ class Finetune_IL(BaseLearner):
+             self._memory_bank = ReplayBank(self._config, logger)
+             self._logger.info('Memory bank created!')
+         self._is_openset_test = config.openset_test
++        self._evaluation_source = getattr(config, 'evaluation_source', None) or 'test'
++        if self._evaluation_source not in {'test', 'validation'}:
++            raise ValueError(
++                "evaluation_source must be either 'test' or 'validation'"
++            )
+         
+         self._replay_batch_size = config.batch_size if config.replay_batch_size is None else config.replay_batch_size
+ 
+@@ -74,11 +79,23 @@ class Finetune_IL(BaseLearner):
+             self._train_dataset = data_manager.get_dataset(indices=np.arange(self._known_classes, self._total_classes),
+                     source='train', mode='train')
+         
+-        self._test_dataset = data_manager.get_dataset(indices=np.arange(0, self._total_classes), source='test', mode='test')
+-        self._openset_test_dataset = data_manager.get_openset_dataset(known_indices=np.arange(0, self._total_classes), source='test', mode='test')
++        self._test_dataset = data_manager.get_dataset(
++            indices=np.arange(0, self._total_classes),
++            source=self._evaluation_source,
++            mode='test',
++        )
++        self._openset_test_dataset = data_manager.get_openset_dataset(
++            known_indices=np.arange(0, self._total_classes),
++            source=self._evaluation_source,
++            mode='test',
++        )
+ 
+         self._logger.info('Train dataset size: {}'.format(len(self._train_dataset)))
+-        self._logger.info('Test dataset size: {}'.format(len(self._test_dataset)))
++        self._logger.info(
++            '{} evaluation dataset size: {}'.format(
++                self._evaluation_source.capitalize(), len(self._test_dataset)
++            )
++        )
+ 
+         self._train_loader = DataLoader(self._train_dataset, batch_size=self._batch_size, shuffle=True, num_workers=self._num_workers)
+         self._test_loader = DataLoader(self._test_dataset, batch_size=self._batch_size, shuffle=False, num_workers=self._num_workers)
+@@ -515,4 +532,4 @@ class Finetune_IL(BaseLearner):
+                 scheduler = None
+             else: 
+                 raise ValueError('No scheduler: {}'.format(config.scheduler))
+-        return scheduler
+\ No newline at end of file
++        return scheduler
+diff --git a/methods/multi_steps/topecl.py b/methods/multi_steps/topecl.py
+index 5808797..dd46ece 100755
+--- a/methods/multi_steps/topecl.py
++++ b/methods/multi_steps/topecl.py
+@@ -1,4 +1,5 @@
+ from os.path import join
++import os
+ 
+ import math
+ import numpy as np
+@@ -28,11 +29,56 @@ def add_special_args(parser: ArgumentParser) -> ArgumentParser:
+     parser.add_argument('--semantic_scale', type=float, help='')
+     parser.add_argument('--mlp1_dim', type=int, help='')
+     parser.add_argument('--mlp2_dim', type=int, help='')
++    parser.add_argument('--append_proto_scale', type=int, help='')
+     parser.add_argument('--stage2_epoch', type=int, help='')
+     parser.add_argument('--infer_eval_mode', type=list, help='')
+     parser.add_argument('--fe_lrscale_firstepoch', type=float, help='')
++    parser.add_argument(
++        '--safe_fast_class_statistics',
++        action='store_true',
++        default=None,
++        help=(
++            'Use one class-aligned DataLoader for feature statistics instead '
++            'of restarting a loader once per class.'
++        ),
++    )
+     return parser
+ 
++
++def class_aligned_batches(targets, batch_size):
++    """Return class-pure batches while preserving class and sample order.
++
++    The public implementation creates a new DataLoader for every class.  On
++    Windows that repeatedly starts worker processes.  A single DataLoader with
++    this batch sampler produces the same per-class batches without that cost.
++    """
++    if batch_size <= 0:
++        raise ValueError('batch_size must be positive')
++    targets = np.asarray(targets)
++    if targets.ndim != 1:
++        raise ValueError('targets must be one-dimensional')
++    batches = []
++    for cls_id in np.unique(targets):
++        indices = np.flatnonzero(targets == cls_id)
++        for start in range(0, len(indices), batch_size):
++            batches.append(indices[start:start + batch_size].tolist())
++    return batches
++
++
++def _preserve_legacy_loader_rng(class_count):
++    """Match the parent-process RNG advancement of one loader per class.
++
++    Creating a DataLoader iterator consumes one random 64-bit base seed even
++    when ``shuffle=False``.  The fused path creates one iterator, whereas the
++    public implementation creates one per class.  Consuming the missing base
++    seeds keeps all later seeded training operations aligned with the legacy
++    path.
++    """
++    if class_count < 1:
++        raise ValueError('class_count must be positive')
++    for _ in range(class_count - 1):
++        torch.empty((), dtype=torch.int64).random_().item()
++
+ class TOPECL(Finetune_IL):
+     def __init__(self, logger, config):
+         super().__init__(logger, config)
+@@ -61,7 +107,12 @@ class TOPECL(Finetune_IL):
+     def _get_text_encoder(self, text_encoder, pretrained)->nn.Module:
+         if 'openai_' in text_encoder:
+             import clip
+-            model, _ = clip.load(text_encoder.replace('openai_', ''), device='cpu', jit=False)
++            model, _ = clip.load(
++                text_encoder.replace('openai_', ''),
++                device='cpu',
++                jit=False,
++                download_root=os.environ.get('CLIP_DOWNLOAD_ROOT'),
++            )
+             model = model if HALF else model.float()
+             model.forward = model.encode_text
+             return clip.tokenize, model
+@@ -83,7 +134,12 @@ class TOPECL(Finetune_IL):
+             return model
+         elif 'openai_' in backbone:
+             import clip
+-            model, _ = clip.load(backbone.replace('openai_', ''), device='cpu', jit=False)
++            model, _ = clip.load(
++                backbone.replace('openai_', ''),
++                device='cpu',
++                jit=False,
++                download_root=os.environ.get('CLIP_DOWNLOAD_ROOT'),
++            )
+             model.float()
+             setattr(model, 'feature_dim', model.text_projection.shape[1])
+             model.forward = model.encode_image
+@@ -101,7 +157,18 @@ class TOPECL(Finetune_IL):
+         if self._network is None:
+             self.text_tokenizer, self.text_enc = self._get_text_encoder(self._config.text_encoder, self._config.text_encoder_pretrained)
+             fe = self._get_feature_extractor(self._config.backbone, self._config.backbone_pretrained)
+-            self._network = TOPECLNet(self._logger, fe, fix_proto=True, mlp1_dim=self._config.mlp1_dim, mlp2_dim=self._config.mlp2_dim)
++            append_proto_scale = (
++                4 if self._config.append_proto_scale is None
++                else self._config.append_proto_scale
++            )
++            self._network = TOPECLNet(
++                self._logger,
++                fe,
++                fix_proto=True,
++                mlp1_dim=self._config.mlp1_dim,
++                mlp2_dim=self._config.mlp2_dim,
++                append_proto_scale=append_proto_scale,
++            )
+             self._network.freeze_FE()
+             self._network.logit_scale_textemb.requires_grad = True
+             self._network.logit_scale_etf.requires_grad = True
+@@ -135,6 +202,11 @@ class TOPECL(Finetune_IL):
+         msk = torch.logical_and(targets<old_etf_logits.shape[1], msk).to(targets.device)
+         return msk
+ 
++    def _text_classification_loss(self, model, semantic_features, lan_logits, targets,
++                                  task_begin, task_end, input_feature=False):
++        # Default is the original TOPECL/MPSB objective, without new operations.
++        return F.cross_entropy(lan_logits[:, task_begin:task_end], targets)
++
+     def _forward_and_compute_loss(self, model, inputs, targets, task_begin, task_end, input_feature=False):
+         if inputs.shape[0] == 0:
+             return torch.zeros([]).cuda(), torch.zeros([]).cuda(), torch.zeros([]).cuda(), None, None, None
+@@ -157,7 +229,8 @@ class TOPECL(Finetune_IL):
+                 old_fea2 = old_fea2 + tmp if model.old_adapter2.is_residual else old_fea2
+                 old_etf_logits = model.old_linear_orth(old_fea2)
+         
+-        lan_loss = F.cross_entropy(lan_logits[:,task_begin:task_end], targets)
++        lan_loss = self._text_classification_loss(
++            model, tmp, lan_logits, targets, task_begin, task_end, input_feature)
+         etf_loss = F.cross_entropy(etf_logits[:,:], targets)
+         msk = self._old_etf_mask(targets, old_etf_logits)
+         old_etf_loss = F.cross_entropy(old_etf_logits[msk], targets[msk]) if old_etf_logits is not None and old_etf_logits[msk].shape[0]!=0 else torch.zeros([]).cuda()
+@@ -199,7 +272,20 @@ class TOPECL(Finetune_IL):
+         for cls_id in range(cls_bd):
+             num_samples = sample_per_class
+             class_mean, class_cov = mean[cls_id], cov[cls_id]
+-            m = MultivariateNormal(class_mean, class_cov)
++            try:
++                m = MultivariateNormal(class_mean, class_cov)
++            except ValueError:
++                class_cov = (class_cov + class_cov.T) * 0.5
++                minimum_eigenvalue = torch.linalg.eigvalsh(class_cov.double()).min().item()
++                jitter = max(1e-6, -minimum_eigenvalue + 1e-6)
++                class_cov = class_cov + torch.eye(
++                    class_cov.shape[0], device=class_cov.device, dtype=class_cov.dtype,
++                ) * jitter
++                self._logger.warning(
++                    f'Gaussian covariance for class {cls_id} required '
++                    f'diagonal jitter {jitter:.3e}'
++                )
++                m = MultivariateNormal(class_mean, class_cov)
+             sampled_data_single = m.sample(sample_shape=(num_samples,))
+             sampled_data.append(sampled_data_single)                
+             sampled_label.extend([cls_id]*num_samples)
+@@ -404,7 +490,7 @@ class TOPECL(Finetune_IL):
+                 return test_acc
+ 
+     # Ref: https://github.com/GengDavid/SLCA/blob/main/models/base.py#L219
+-    def _calculate_mean_convs(self):
++    def _calculate_mean_convs_legacy(self):
+         assert self.class_means.shape[0] == self._known_classes
+         model = self._network
+         model.eval()
+@@ -437,6 +523,73 @@ class TOPECL(Finetune_IL):
+         if self._cur_task == 0:
+             self.radius = math.sqrt(self.radius/self._total_classes)
+ 
++    def _calculate_mean_convs_aligned_loader(self):
++        """Equivalent class statistics with one worker pool per task."""
++        assert self.class_means.shape[0] == self._known_classes
++        model = self._network
++        model.eval()
++        dataset = self._sampler_dataset
++        class_range = np.unique(dataset.targets)
++        batches = class_aligned_batches(dataset.targets, self._batch_size)
++        stats_loader = DataLoader(
++            dataset,
++            batch_sampler=batches,
++            num_workers=self._num_workers,
++        )
++        self._logger.info(
++            'Safe fast class statistics: {} classes, {} aligned batches, one DataLoader'.format(
++                len(class_range), len(batches)
++            )
++        )
++        vectors_by_class = {int(cls_id): [] for cls_id in class_range}
++        radius_by_class = {int(cls_id): [] for cls_id in class_range}
++        if self._cur_task == 0:
++            self.radius = 0.0
++
++        for _, inputs, targets in stats_loader:
++            unique_targets = torch.unique(targets)
++            if unique_targets.numel() != 1:
++                raise RuntimeError('class-aligned statistics batch contains mixed labels')
++            cls_id = int(unique_targets.item())
++            inputs = inputs.cuda()
++            with torch.no_grad():
++                with autocast():
++                    features = model.feature_extractor(inputs)
++                    features = features.half() if HALF else features
++                    if self._cur_task == 0:
++                        radius_by_class[cls_id].append(
++                            model.adapter1(features).detach().cpu()
++                        )
++            vectors_by_class[cls_id].append(features.detach().cpu())
++
++        _preserve_legacy_loader_rng(len(class_range))
++
++        for cls_id in class_range:
++            cls_id = int(cls_id)
++            vectors = torch.cat(vectors_by_class[cls_id], dim=0)
++            if self._cur_task == 0:
++                radius_data = torch.cat(radius_by_class[cls_id], dim=0)
++                self.radius += (
++                    torch.trace(
++                        torch.cov(radius_data.T)
++                        + torch.eye(radius_data.shape[1]) * EPSILON
++                    ).cpu().item()
++                    / int(radius_data.shape[1])
++                )
++            cls_mean = torch.stack([torch.mean(vectors, dim=0)])
++            cls_cov = torch.stack(
++                [torch.cov(vectors.T) + torch.eye(cls_mean.shape[1]) * EPSILON]
++            )
++            self.class_means = torch.cat((self.class_means, cls_mean), dim=0)
++            self.class_covs = torch.cat((self.class_covs, cls_cov), dim=0)
++        if self._cur_task == 0:
++            self.radius = math.sqrt(self.radius / self._total_classes)
++
++    def _calculate_mean_convs(self):
++        if getattr(self._config, 'safe_fast_class_statistics', False):
++            return self._calculate_mean_convs_aligned_loader()
++        return self._calculate_mean_convs_legacy()
++
+     def _get_scheduler(self, optimizer, config, max_epoch, is_init: bool):
+         scheduler = None
+         if is_init:
+@@ -593,4 +746,3 @@ class TOPECL(Finetune_IL):
+                 'class_means':self.class_means, 'class_covs':self.class_covs, 'radius':self.radius}
+         torch.save(save_dict, save_path)
+         self._logger.info('checkpoint saved at: {}'.format(save_path))
+-    
+\ No newline at end of file
+diff --git a/utils/config.py b/utils/config.py
+index ffbbb0b..14e82a4 100755
+--- a/utils/config.py
++++ b/utils/config.py
+@@ -52,6 +52,9 @@ class Config:
+         parser.add_argument('--img_size', type=int, default=None, help='if not config will follow origin size of dataset')
+         parser.add_argument('--shuffle', action="store_true", default=None, help='shuffle class order')
+         parser.add_argument('--split_for_valid', action="store_true", default=None, help='whether to split training set to true training set and valid set') # 赋初值为 None 相当于 False
++        parser.add_argument('--validation_samples_per_class', type=int, default=None, help='training samples held out per class for validation')
++        parser.add_argument('--validation_seed', type=int, default=None, help='fixed seed used only to create the validation hold-out')
++        parser.add_argument('--evaluation_source', type=str, choices=['test', 'validation'], default=None, help='dataset split used for task-end metrics')
+         parser.add_argument('--init_cls', type=str, default=None, help='init class num for the training')
+         parser.add_argument('--increment', type=str, default=None, help='increment class num for the training')
+         
+@@ -210,4 +213,3 @@ class Config:
+         logger.info(30*"=")
+         logger.info('Inital configs overwrited by yaml config file: {}'.format(self.init_overwrite_names))
+         logger.info('Inital configs overwrited by loaded pkl configs: {}'.format(self.load_overwrite_names))
+-        
+\ No newline at end of file
+diff --git a/utils/data_manager.py b/utils/data_manager.py
+index 56d8cb1..a743f59 100755
+--- a/utils/data_manager.py
++++ b/utils/data_manager.py
+@@ -1,10 +1,60 @@
++import hashlib
++
+ import numpy as np
+ from torchvision import transforms
+ from datasets import get_idata
+ from utils.toolkit import DummyDataset
+ 
++def stratified_holdout_indices(targets, samples_per_class, seed):
++    """Return a deterministic class-balanced hold-out split.
++
++    The split is computed once from the training targets and is independent of
++    DataLoader order or training RNG consumption.  Returned indices are sorted
++    so the resulting datasets also have deterministic sample order.
++    """
++    targets = np.asarray(targets)
++    samples_per_class = int(samples_per_class)
++    seed = int(seed)
++    if samples_per_class <= 0:
++        raise ValueError("samples_per_class must be positive")
++
++    rng = np.random.default_rng(seed)
++    validation = []
++    for class_id in np.unique(targets):
++        class_indices = np.flatnonzero(targets == class_id)
++        if samples_per_class >= len(class_indices):
++            raise ValueError(
++                "validation hold-out must leave at least one training sample "
++                "for class {} (requested {}, available {})".format(
++                    int(class_id), samples_per_class, len(class_indices)
++                )
++            )
++        validation.extend(
++            rng.choice(class_indices, samples_per_class, replace=False).tolist()
++        )
++
++    validation = np.asarray(sorted(validation), dtype=np.int64)
++    keep = np.ones(len(targets), dtype=bool)
++    keep[validation] = False
++    training = np.flatnonzero(keep).astype(np.int64, copy=False)
++    return training, validation
++
++
+ class DataManager(object):
+-    def __init__(self, logger, dataset_name, img_size, split_dataset:bool, shuffle=False, seed=1993, init_cls=None, increment=None, use_valid=False):
++    def __init__(
++        self,
++        logger,
++        dataset_name,
++        img_size,
++        split_dataset: bool,
++        shuffle=False,
++        seed=1993,
++        init_cls=None,
++        increment=None,
++        use_valid=False,
++        validation_samples_per_class=0,
++        validation_seed=3407,
++    ):
+         """
+         dataset_name: 数据集名称
+         shuffle: 是否对类别标签进行重排列, 即随机类别到达顺序
+@@ -15,6 +65,7 @@ class DataManager(object):
+         self.dataset_name = dataset_name
+         self._split_dataset = split_dataset
+         self._use_valid = use_valid
++        self._validation_info = None
+         
+         # Data
+         self._increment_steps = []
+@@ -87,6 +138,46 @@ class DataManager(object):
+         # Map indices
+         self._train_targets = self._map_new_class_index(self._train_targets, self._class_order)
+         self._test_targets = self._map_new_class_index(self._test_targets, self._class_order)
++        if use_valid:
++            self._valid_targets = self._map_new_class_index(
++                self._valid_targets, self._class_order
++            )
++
++        validation_samples_per_class = int(validation_samples_per_class or 0)
++        if validation_samples_per_class:
++            if use_valid:
++                raise ValueError(
++                    "use_valid and validation_samples_per_class cannot be enabled together"
++                )
++            original_targets = self._train_targets.copy()
++            train_indices, validation_indices = stratified_holdout_indices(
++                original_targets,
++                validation_samples_per_class,
++                validation_seed,
++            )
++            full_train_data = self._train_data
++            self._train_data = full_train_data[train_indices]
++            self._train_targets = original_targets[train_indices]
++            self._valid_data = full_train_data[validation_indices]
++            self._valid_targets = original_targets[validation_indices]
++            self._use_valid = True
++            self.train_sample_num = len(self._train_targets)
++            self.validation_sample_num = len(self._valid_targets)
++            self._validation_info = {
++                "source": "train_holdout",
++                "samples_per_class": validation_samples_per_class,
++                "seed": int(validation_seed),
++                "train_samples": int(self.train_sample_num),
++                "validation_samples": int(self.validation_sample_num),
++                "validation_indices_sha256": hashlib.sha256(
++                    validation_indices.tobytes()
++                ).hexdigest(),
++            }
++            self._logger.info(
++                "Deterministic validation hold-out: {}".format(
++                    self._validation_info
++                )
++            )
+         # Map class_to_idx
+         for key in self.class_to_idx.keys():
+             self.class_to_idx[key] = self._class_order.index(self.class_to_idx[key])
+@@ -119,6 +210,10 @@ class DataManager(object):
+         """        
+         return self._total_class_num
+ 
++    @property
++    def validation_info(self):
++        return None if self._validation_info is None else dict(self._validation_info)
++
+     def get_task_size(self, task):
+         return self._increment_steps[task]
+ 
+@@ -150,7 +245,7 @@ class DataManager(object):
+             x, y = self._train_data, self._train_targets
+         elif source == 'test':
+             x, y = self._test_data, self._test_targets
+-        elif source == 'valid':
++        elif source in {'valid', 'validation'}:
+             if self._use_valid:
+                 x, y = self._valid_data, self._valid_targets
+             else:
+@@ -251,6 +346,13 @@ class DataManager(object):
+             x, y = self._train_data, self._train_targets
+         elif source == 'test':
+             x, y = self._test_data, self._test_targets
++        elif source in {'valid', 'validation'}:
++            if self._use_valid:
++                x, y = self._valid_data, self._valid_targets
++            else:
++                raise ValueError(
++                    'validation source requested but no validation split is configured'
++                )
+         else:
+             raise ValueError('Unknown data source {}.'.format(source))
+ 
+diff --git a/utils/logger.py b/utils/logger.py
+index f83dde3..5f4b547 100755
+--- a/utils/logger.py
++++ b/utils/logger.py
+@@ -2,8 +2,9 @@ import os
+ from datetime import datetime
+ import logging
+ import random
+-from tensorboardX import SummaryWriter
+-import wandb
++
++SummaryWriter = None
++wandb = None
+ 
+ from utils.toolkit import check_makedirs
+ 
+@@ -13,7 +14,8 @@ class MyLogger:
+         self._cur_seed = config.seed
+ 
+         # initial logger
+-        gpid, pid = os.getpgid(os.getpid()), os.getpid()
++        pid = os.getpid()
++        gpid = os.getpgid(pid) if hasattr(os, 'getpgid') else pid
+ 
+         self._logger = logging.getLogger('GPID{}-PID{}'.format(gpid, pid))
+         self._logger.setLevel(logging.INFO)
+@@ -45,18 +47,36 @@ class MyLogger:
+ 
+         self._logger.propagate = False
+         self._logger.info('logger in GPID {} PID {} is created !'.format(gpid, pid))
+-        self._logger.info('Tmux session name: {}'.format(os.popen("tmux display-message -p '#S'").read().strip()))
++        tmux_session = ''
++        if os.name != 'nt':
++            tmux_session = os.popen("tmux display-message -p '#S'").read().strip()
++        self._logger.info('Tmux session name: {}'.format(tmux_session))
+ 
+         self._logger_type = None
+         self._tblog = None
+ 
+     def init_visual_log(self, config):
+         # prepare visualize log
++        global SummaryWriter, wandb
+         self._logger_type = config.logger_type if config.logger_type is not None else ''
+         if 'tensorboard' in self._logger_type and self._tblog == None:
++            if SummaryWriter is None:
++                try:
++                    from tensorboardX import SummaryWriter as writer_class
++                except ImportError:
++                    from torch.utils.tensorboard import SummaryWriter as writer_class
++                SummaryWriter = writer_class
+             self._tblog = SummaryWriter(os.path.join(config.logdir, 'tb'))
+             self.info('Applying tensorboard as visual log')
+         if 'wandb' in self._logger_type:
++            if wandb is None:
++                try:
++                    import wandb as wandb_module
++                except ImportError as error:
++                    raise ImportError(
++                        'logger_type requests wandb, but wandb is not installed'
++                    ) from error
++                wandb = wandb_module
+             os.environ['WANDB_DIR']=config.logdir
+             wandb.init(project=config.project, config=config.get_parameters_dict())
+             # wandb.run.name = 'seed{}_{}_{}_{}_{}'.format(config.seed, config.method, config.dataset,
+@@ -96,4 +116,4 @@ class MyLogger:
+         if 'tensorboard' in self._logger_type:
+             self._tblog.close()
+         if 'wandb' in self._logger_type:
+-            pass
+\ No newline at end of file
++            pass

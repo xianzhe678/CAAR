@@ -1,0 +1,63 @@
+basic:
+    device: '0'
+    seed: [42]
+    dataset: cifar100
+    shuffle: false
+    method: formal_topecl_attribute_ablation
+    method_type: multi_steps
+    eval_metric: acc
+    backbone: openai_ViT-B/16
+    save_models: false
+    save_pred_record: true
+    split_dataset: true
+    use_valid: false
+    init_cls: 10
+    increment: 10
+    note: cifar100_official_seed42_text_aligned_attribute_ablation
+    openset_test: false
+    evaluation_source: test
+    validation_samples_per_class: 0
+
+special:
+    backbone_pretrained: null
+    text_encoder: openai_ViT-B/16
+    text_encoder_pretrained: null
+    sample_per_class: 1
+    text_template: "a photo of a {}."
+    semantic_scale: 1.0
+    mlp1_dim: 512
+    mlp2_dim: 64
+    stage2_epoch: 5
+    infer_eval_mode: ['LCLS']
+    fe_lrscale_firstepoch: 0.001
+    safe_fast_class_statistics: true
+    formal_fusion_weight: 1.0
+    formal_checkpoint_policy: none
+    formal_require_clean_git: false
+    formal_require_validation_for_screening: false
+    screening_skip_epoch_diagnostics: true
+
+    attribute_description_path: descriptions/cifar100_visual_attributes_v1.json
+    attribute_require_descriptions: true
+    attribute_num_subprototypes: 4
+    attribute_mmr_lambda: 0.7
+    attribute_residual_hidden: 16
+    attribute_residual_radius: 0.1
+    attribute_strength: 0.5
+    attribute_initialization_seed: 35035
+    attribute_focal_gamma: 2.0
+    attribute_inference_scale: 0.5
+    attribute_branch_lrate: 0.001
+    attribute_fixed_orth_weight: 0.0
+
+options:
+    cifar100:
+        openai_ViT-B/16:
+            img_size: 224
+            epochs: 20
+            batch_size: 32
+            num_workers: 4
+            opt_type: adamw
+            lrate: 0.001
+            weight_decay: 0.0000
+            scheduler: cos
